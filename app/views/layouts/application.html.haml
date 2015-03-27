@@ -1,0 +1,20 @@
+!!! 5
+%html(lang="en-US")
+  %head
+    %title Don't Break the Chain | Get Better at Anything
+    %meta(charset="UTF-8")
+    %meta(name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no")
+    = csrf_meta_tag
+    = stylesheet_link_tag "application"
+    = javascript_include_tag "application"
+  %body
+    .container
+      %header
+        = render 'shared/header'
+      %section.content.clearfix
+        = render 'shared/messages'
+        = yield
+      %footer
+        .row.text-center
+          .col-xs-12
+            &copy #{Time.now.year} DBTC.works
