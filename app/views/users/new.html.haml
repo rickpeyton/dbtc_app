@@ -9,13 +9,7 @@
       .panel-heading
         %h3.panel-title Join DBTC - It's Free!
       .panel-body
-        %form
-          .form-group
-            %label{for: "exampleInputEmail1"} Email Address
-            %input{type: "email", class: "form-control", id: "exampleInputEmail1",
-                  placeholder: "Enter email"}
-          .form-group
-            %label{for: "exampleInputPassword1"} Password
-            %input{type: "password", class: "form-control", id: "exampleInputPassword1",
-                  placeholder: "Password"}
-          %button{type: "submit", class: "btn btn-success"} Submit
+        = bootstrap_form_for(@user) do |f|
+          = f.email_field :email
+          = f.password_field :password
+          = f.submit "Join", class: "btn btn-success"

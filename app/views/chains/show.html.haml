@@ -1,0 +1,27 @@
+%h4.text-center #{@chain.name}
+%h3.text-center 365 days in a row!
+.row.text-center
+  .col-xs-12
+    .calendar
+      = link_to icon('calendar-o', class: "fa-5x"), "#"
+      .weekday
+        = Time.now.strftime("%^a")
+      .day
+        = Time.now.day
+      .chain
+        = icon('times', class: "fa-5x")
+.row.text-center
+  - counter = 0
+  - 6.times do
+    - counter += 86400
+    .col-xs-4
+      .calendar
+        = link_to icon('calendar-o', class: "fa-5x"), "#"
+        .weekday
+          = (Time.now - counter).strftime("%^a")
+        .day
+          = (Time.now - counter).day
+        .chain
+          = icon('times', class: "fa-5x")
+
+%p.text-center Your longest chain was 365 days
