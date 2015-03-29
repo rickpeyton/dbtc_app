@@ -20,6 +20,7 @@ describe ChainsController do
       end
 
     end
+
     context "with a user session who is not the user" do
       it "redirects to the logout path" do
         session[:user_id] = Fabricate(:user).id
@@ -28,6 +29,7 @@ describe ChainsController do
       end
 
     end
+
     context "with no user session" do
       it "redirects to the login path"
     end

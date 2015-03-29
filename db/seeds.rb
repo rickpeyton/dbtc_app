@@ -5,3 +5,21 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+#
+
+User.create(email: "alice@example.com", password: "password")
+User.create(email: "bob@example.com", password: "password")
+Chain.create(name: "Commit to Github", user: User.first, longest_chain: 30)
+Chain.create(name: "Exercise 7 Minutes", user: User.last, longest_chain: 4)
+
+counter = 6
+30.times do
+  Link.create(link_day: Time.now.utc.midnight - counter.days, chain: Chain.first)
+  counter += 1
+end
+
+counter = 6
+4.times do
+  Link.create(link_day: Time.now.utc.midnight - counter.days, chain: Chain.last)
+  counter += 1
+end

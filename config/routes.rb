@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :users, only: [:create] do
     resources :chains, only: [:show, :new, :create]
   end
+  resources :links, only: [:create, :destroy]
   get "/login", to: "sessions#new"
   post "/login", to: "sessions#create"
   get "/logout", to: "sessions#destroy"
