@@ -16,6 +16,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bcrypt'
 gem 'bootstrap_form'
 gem 'font-awesome-sass', '~> 4.3.0'
+gem 'puma'
 
 group :development, :test do
   gem 'pry'
@@ -31,4 +32,8 @@ group :test do
   gem 'fabrication'
   gem 'faker'
   gem 'capybara'
+end
+
+group :production do
+  gem 'rails_12factor'
 end
