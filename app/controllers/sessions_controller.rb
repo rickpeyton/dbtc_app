@@ -11,7 +11,11 @@ class SessionsController < ApplicationController
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
       flash[:success] = "You logged in successfully"
-      redirect_to user_chain_path(@user, @user.chains.first)
+      if @user.chains.count > 0
+        redirect_to user_chain_path(@user, @user.chains.first)
+      else
+        redirect_to new_user_chain_path(@user)
+      end
     else
       flash[:danger] = "Your login attempt failed"
       redirect_to login_path

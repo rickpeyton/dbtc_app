@@ -31,7 +31,12 @@ describe ChainsController do
     end
 
     context "with no user session" do
-      it "redirects to the login path"
+      it "redirects to the login path" do
+        Fabricate(:user)
+        Fabricate(:chain, user: User.first)
+        get :show, user_id: User.first, id: Chain.first
+        expect(response).to redirect_to login_path
+      end
     end
   end
 
