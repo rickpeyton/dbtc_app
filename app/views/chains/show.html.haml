@@ -1,13 +1,15 @@
 %h4.text-center #{@chain.name}
-%h3.text-center Current Chain: #{@chain.current_chain} links
+%h3.text-center Current Chain: #{pluralize(@chain.current_chain, "link")}
 .row.text-center
   .col-xs-12
-    - today = Time.now
+    - today = Time.zone.now
+    - today_utc = Time.now.utc
     - today_string = today.strftime("%Y/%m/%d")
-    - link = @chain.links.find_by(link_day: today_string)
+    - today_utc_string = today_utc.strftime("%Y/%m/%d")
+    - link = @chain.links.find_by(link_day: today_utc_string)
     .calendar
       - unless link.present?
-        = link_to icon('calendar-o', class: "fa-5x"), links_path(user: @user.id, chain: @chain.id, time: today_string), method: :post
+        = link_to icon('calendar-o', class: "fa-5x"), links_path(user: @user.id, chain: @chain.id, time: today_utc_string), method: :post
       - else
         = link_to icon('calendar-o', class: "fa-5x"), link_path(link), method: :delete
       .weekday
@@ -21,21 +23,24 @@
   - counter = 0
   - 6.times do
     - counter += 86400
-    - this_day = (Time.now - counter)
+    - this_day = (Time.zone.now - counter)
+    - this_utc_day = (Time.now.utc - counter)
     - this_day_string = this_day.strftime("%Y/%m/%d")
-    - link = @chain.links.find_by(link_day: this_day_string)
+    - this_utc_day_string = this_utc_day.strftime("%Y/%m/%d")
+    - link = @chain.links.find_by(link_day: this_utc_day_string)
     .col-xs-4
       .calendar
         - unless link.present?
-          = link_to icon('calendar-o', class: "fa-5x"), links_path(user: @user.id, chain: @chain.id, time: this_day_string), method: :post
+          = link_to icon('calendar-o', class: "fa-5x"), links_path(user: @user.id, chain: @chain.id, time: this_utc_day_string), method: :post
         - else
           = link_to icon('calendar-o', class: "fa-5x"), link_path(link), method: :delete
         .weekday
-          = (Time.now - counter).strftime("%^a")
+          = (Time.zone.now - counter).strftime("%^a")
         .day
-          = (Time.now - counter).day
+          = (Time.zone.now - counter).day
         - if link.present?
           .chain
             = icon('times', class: "fa-5x")
 
-%p.text-center Your longest chain was #{@chain.longest_chain} links
+%h3.text-center Longest Chain: #{pluralize(@chain.longest_chain, "link")}
+%p.text-center #{Time.zone.now.strftime("%l:%M%P %Z")} (#{link_to "Update Time Zone", edit_user_path(@user)})

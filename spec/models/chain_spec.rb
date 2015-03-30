@@ -28,5 +28,18 @@ describe Chain do
     end
   end
 
+  describe "#recalculate_longest_chain" do
+    it "recalculates the longest chain only when current chain after delete is one less than longest chain" do
+      alice = Fabricate(:user)
+      alice_chain = Fabricate(:chain, user: alice, longest_chain: 4)
+      Fabricate(:link, link_day: Time.now.utc.midnight - 11.days, chain: alice_chain)
+      Fabricate(:link, link_day: Time.now.utc.midnight - 12.days, chain: alice_chain)
+      Fabricate(:link, link_day: Time.now.utc.midnight - 13.days, chain: alice_chain)
+      Fabricate(:link, link_day: Time.now.utc.midnight - 5.days, chain: alice_chain)
+      alice_chain.recalculate_longest_chain
+      expect(alice_chain.longest_chain).to eq(3)
+    end
+  end
+
 end
 

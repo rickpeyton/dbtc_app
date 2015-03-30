@@ -7,7 +7,7 @@
         %span.icon-bar
         %span.icon-bar
       %a.navbar-brand(href="#{root_path}")
-        = icon('chain-broken', style: "color: white")
+        #{icon('chain-broken', style: "color: white")} dbtc.works
     .collapse.navbar-collapse(id="bs-example-navbar-collapse-3")
       - if logged_in?
         %form.navbar-form.navbar-right(action="#{logout_path}" method="get")

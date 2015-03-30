@@ -18,4 +18,17 @@ class Chain < ActiveRecord::Base
       update_attribute(:longest_chain, current_chain)
     end
   end
+
+  def recalculate_longest_chain
+    current_streak = 1
+    longest_streak = 0
+    links.order(link_day: :desc).each do |l|
+      while links.find_by(link_day: l.link_day - (86400 * current_streak)) != nil
+        current_streak +=1
+        longest_streak = current_streak if current_streak > longest_streak
+      end
+      current_streak = 1
+    end
+    update_attribute(:longest_chain, longest_streak)
+  end
 end

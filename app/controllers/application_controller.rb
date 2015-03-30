@@ -24,4 +24,12 @@ class ApplicationController < ActionController::Base
     flash[:danger] = "You must be logged in to do that."
     redirect_to login_path
   end
+
+  def set_time_zone
+    if logged_in?
+      Time.use_zone(current_user.time_zone) { yield }
+    else
+      yield
+    end
+  end
 end

@@ -6,6 +6,24 @@ describe UsersController do
       get :new
       expect(assigns(:user)).to be_an_instance_of(User)
     end
+
+    it "redirects to the users first chain if they are logged in" do
+      alice = Fabricate(:user)
+      Fabricate(:chain, user: alice)
+      session[:user_id] = alice.id
+      get :new
+      expect(response).to redirect_to user_chain_path(alice, alice.chains.first)
+    end
+  end
+
+  describe "GET #edit" do
+    it "only allows the user to access the profile" do
+      alice = Fabricate(:user)
+      bob = Fabricate(:user)
+      session[:user_id] = bob.id
+      get :edit, id: alice.id
+      expect(response).to redirect_to login_path
+    end
   end
 
   describe "POST #create" do
@@ -55,5 +73,50 @@ describe UsersController do
       it "renders the new template" do
         expect(response).to render_template :new
       end
+  end
+
+  describe "PATCH #update" do
+    let(:alice) { Fabricate(:user) }
+
+    context "with valid input" do
+      before do
+        session[:user_id] = alice.id
+        patch :update, id: alice.id, user: { email: "alice@inchains.com", password: "passwordzzz", time_zone: "Central Time (US & Canada)" }
+      end
+
+      it "redirects to the user edit page" do
+        expect(response).to redirect_to edit_user_path(alice)
+      end
+
+      it "updates the user" do
+        expect(User.first.email).to eq("alice@inchains.com")
+      end
+
+      it "sets the success message" do
+        expect(flash[:success]).not_to be_empty
+      end
+    end
+
+    it "only allows the user to update the profile" do
+      session[:user_id] = Fabricate(:user).id
+      patch :update, id: alice.id, user: { email: "alice@inchains.com", password: "passwordzzz", time_zone: "Central Time (US & Canada)" }
+      expect(response).to redirect_to login_path
+    end
+
+    context "with invalid data" do
+      before do
+        session[:user_id] = alice.id
+        patch :update, id: alice.id, user: { email: "alice@inchains.com", password: "zzz", time_zone: "Central Time (US & Canada)" }
+      end
+
+      it "renders the edit template if there is an error" do
+        expect(response).to render_template :edit
+      end
+
+      it "sets the danger message if there is an error" do
+        expect(flash[:danger]).not_to be_empty
+      end
+    end
+
   end
 end

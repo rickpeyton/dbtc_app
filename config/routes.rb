@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get 'ui(/:action)', controller: 'ui'
   root to: "users#new"
-  resources :users, only: [:create] do
+  resources :users, only: [:edit, :create, :update] do
     resources :chains, only: [:show, :new, :create]
   end
   resources :links, only: [:create, :destroy]

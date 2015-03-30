@@ -3,6 +3,7 @@ class ChainsController < ApplicationController
   before_action do
     require_same_user(@user)
   end
+  around_filter :set_time_zone, only: [:show]
 
   def show
     @chain = Chain.find(params[:id])

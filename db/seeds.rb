@@ -7,8 +7,8 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 #
 
-User.create(email: "alice@example.com", password: "password")
-User.create(email: "bob@example.com", password: "password")
+User.create(email: "alice@example.com", password: "password", time_zone: "Central Time (US & Canada)")
+User.create(email: "bob@example.com", password: "password", time_zone: "Central Time (US & Canada)")
 Chain.create(name: "Commit to Github", user: User.first, longest_chain: 30)
 Chain.create(name: "Exercise 7 Minutes", user: User.last, longest_chain: 4)
 
